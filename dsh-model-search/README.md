@@ -63,13 +63,25 @@ pkill -f "dsh/lib/bin.js web" && dsh web --no-open
 
 #### 1. 安装包本体
 
-```bash
-# 选项 A：tarball 离线包安装
-dsh plugin --profile web add /path/to/dsh-model-search-1.0.0.tgz
+**推荐方式：本地目录软链（link）**
 
-# 选项 B：本地目录软链（推荐开发修改时使用，支持热重载）
+适合直接克隆了本仓库的用户，支持即时修改与热重载：
+
+```bash
 cd ~/.dsh/profiles/web
 pnpm add link:/path/to/dsh-model-search
+```
+
+**可选方式：自行打包 tgz 离线安装**
+
+如需分发到未克隆源码的机器，可先在插件目录下打包生成 tarball：
+
+```bash
+cd dsh-model-search
+npm pack   # 会在当前目录生成 dsh-model-search-1.0.0.tgz
+
+# 通过 dsh 将生成的 tgz 安装进 web profile：
+dsh plugin --profile web add ./dsh-model-search-1.0.0.tgz
 ```
 
 > **说明**：执行 `add` 时若提示 `declares no dsh.bundle — installed as a plain dependency, not a profile layer` 属于完全正常的预期提示，本插件通过下一步的 patch 配置层挂载组合。

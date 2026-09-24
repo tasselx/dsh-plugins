@@ -33,15 +33,23 @@ cd <plugin-name>
 
 #### 1. 安装插件依赖
 
-可选择打包分发形态（tgz）或源码软链（本地开发）：
+**推荐方式：源码软链（本地开发/克隆使用）**
 
 ```bash
-# 方式 A：tarball 分发安装
-dsh plugin --profile web add /path/to/<plugin-name>-<version>.tgz
-
-# 方式 B：本地开发与热更（link）
 cd ~/.dsh/profiles/web
 pnpm add link:/path/to/dsh-plugins/<plugin-name>
+```
+
+**可选方式：打包为 tgz 离线安装**
+
+如需分发给其他环境，可在对应插件目录下使用 `npm pack` 打包：
+
+```bash
+cd /path/to/dsh-plugins/<plugin-name>
+npm pack  # 将在当前目录生成 <plugin-name>-<version>.tgz
+
+# 随后通过 dsh 安装生成的 tarball：
+dsh plugin --profile web add ./<plugin-name>-<version>.tgz
 ```
 
 > **说明**：纯客户端 UI 插件若无 `dsh.bundle` 会有标准安装提示，直接通过后续的配置文件进入 profile 组合即可。
