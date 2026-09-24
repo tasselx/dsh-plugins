@@ -18,9 +18,20 @@
 
 `dsh` 基于 Cordis 微内核架构构建，插件主要通过 profile 进行管理与组合。以 Web 端插件为例：
 
-### 极速一键安装（推荐）
+### 极速在线安装（免克隆，基于 GitHub Release）
 
-本仓库内插件通常自带 `install.sh` 脚本，可直接进入对应子目录执行自动配置：
+对于已发布的插件版本，可在任何终端直接通过 GitHub Releases 的 `.tgz` 资源地址一键添加：
+
+```bash
+# 以 dsh-model-search 为例：
+dsh plugin --profile web add https://github.com/tasselx/dsh-plugins/releases/latest/download/dsh-model-search-1.0.0.tgz
+```
+
+---
+
+### 本地克隆开发安装
+
+进入对应子目录执行自带的 `install.sh` 脚本进行软链与自动配置（修改代码即可热更）：
 
 ```bash
 cd <plugin-name>
@@ -33,24 +44,15 @@ cd <plugin-name>
 
 #### 1. 安装插件依赖
 
-**推荐方式：源码软链（本地开发/克隆使用）**
-
-```bash
-cd ~/.dsh/profiles/web
-pnpm add link:/path/to/dsh-plugins/<plugin-name>
-```
-
-**可选方式：打包为 tgz 离线安装**
-
-如需分发给其他环境，可在对应插件目录下使用 `npm pack` 打包：
-
-```bash
-cd /path/to/dsh-plugins/<plugin-name>
-npm pack  # 将在当前目录生成 <plugin-name>-<version>.tgz
-
-# 随后通过 dsh 安装生成的 tarball：
-dsh plugin --profile web add ./<plugin-name>-<version>.tgz
-```
+- **源码软链（本地开发）**：
+  ```bash
+  cd ~/.dsh/profiles/web
+  pnpm add link:/path/to/dsh-plugins/<plugin-name>
+  ```
+- **Release tgz 安装**：
+  ```bash
+  dsh plugin --profile web add https://github.com/tasselx/dsh-plugins/releases/latest/download/<plugin-name>-<version>.tgz
+  ```
 
 > **说明**：纯客户端 UI 插件若无 `dsh.bundle` 会有标准安装提示，直接通过后续的配置文件进入 profile 组合即可。
 

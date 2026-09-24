@@ -1,0 +1,41 @@
+name: Build and Release Plugins
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Package all plugins
+        id: package
+        run: |
+          mkdir -p dist
+          for dir in */ ; do
+            if [ -f "${dir}package.json" ]; then
+              echo "Packaging plugin in ${dir}..."
+              (cd "$dir" && npm pack --pack-destination ../dist)
+            fi
+          done
+          echo "Generated packages:"
+          ls -lh dist/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.tgz
+          generate_release_notes: true

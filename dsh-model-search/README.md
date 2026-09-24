@@ -27,9 +27,37 @@
 
 > **注意**：请确保已至少启动过一次 `dsh web`（以生成 `~/.dsh/profiles/web` 运行环境）。
 
-### 方式一：一键自动安装（推荐）
+### 方式一：在线一键安装（推荐，无需克隆代码）
 
-进入本插件目录，直接运行自带的安装脚本：
+在任何已安装 `dsh` 的终端直接执行以下单行命令，将直接从 GitHub Releases 下载最新的 `.tgz` 包并自动完成配置与重启：
+
+```bash
+dsh plugin --profile web add https://github.com/tasselx/dsh-plugins/releases/latest/download/dsh-model-search-1.0.0.tgz && \
+(grep -q "name: dsh-model-search" ~/.dsh/profiles/web/cordis.patch.yml 2>/dev/null || printf "\n- id: model-search\n  name: dsh-model-search\n" >> ~/.dsh/profiles/web/cordis.patch.yml) && \
+pkill -f "dsh/lib/bin.js web" && dsh web --no-open
+```
+
+或者分步执行：
+
+1. **安装远程 Release 预构建包**：
+   ```bash
+   dsh plugin --profile web add https://github.com/tasselx/dsh-plugins/releases/latest/download/dsh-model-search-1.0.0.tgz
+   ```
+2. **在 `~/.dsh/profiles/web/cordis.patch.yml` 末尾追加**：
+   ```yaml
+   - id: model-search
+     name: dsh-model-search
+   ```
+3. **重启 dsh 服务**：
+   ```bash
+   pkill -f "dsh/lib/bin.js web" && dsh web --no-open
+   ```
+
+---
+
+### 方式二：本地克隆仓库一键安装（开发者推荐）
+
+若已克隆了本仓库，进入插件目录直接运行一键脚本即可（软链方式，修改代码可实时热更）：
 
 ```bash
 cd dsh-model-search
@@ -37,23 +65,6 @@ cd dsh-model-search
 ```
 
 *(或者通过 npm/pnpm 触发：`pnpm run install:dsh`)*
-
-脚本会自动完成：
-1. 本地目录软链（`link`）安装到 `~/.dsh/profiles/web`；
-2. 自动检测并在 `~/.dsh/profiles/web/cordis.patch.yml` 中追加 `model-search` 配置行；
-3. 输出后续重启指引。
-
----
-
-### 方式二：终端一行单行命令（One-Liner）
-
-在 `dsh-model-search` 所在目录直接粘贴执行：
-
-```bash
-pnpm --dir ~/.dsh/profiles/web add link:"$(pwd)" && \
-(grep -q "name: dsh-model-search" ~/.dsh/profiles/web/cordis.patch.yml 2>/dev/null || printf "\n- id: model-search\n  name: dsh-model-search\n" >> ~/.dsh/profiles/web/cordis.patch.yml) && \
-pkill -f "dsh/lib/bin.js web" && dsh web --no-open
-```
 
 ---
 

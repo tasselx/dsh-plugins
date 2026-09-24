@@ -11,8 +11,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Tarballs
+# Tarballs and dist
 *.tgz
+dist/
 
 # Local env files
 .env
