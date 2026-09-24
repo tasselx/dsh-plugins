@@ -1,0 +1,32 @@
+{
+  "name": "dsh-model-search",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Searchable model selector for the dsh Web GUI composer seat",
+  "type": "module",
+  "main": "lib/index.js",
+  "scripts": {
+    "install:dsh": "./install.sh",
+    "uninstall:dsh": "./uninstall.sh"
+  },
+  "files": [
+    "lib"
+  ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-model-selection",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-commands",
+        "@deepseek-ai/dsh-api-session-controller",
+        "@deepseek-ai/dsh-api-remotes"
+      ]
+    }
+  }
+}
